@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ продовольствия</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin: 20px 0;
+        }
+
+        .form-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-sizing: border-box; /* Добавлено для правильного выравнивания */
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Добавлено для правильного выравнивания */
+        }
+
+        .form-container .error {
+            font-size: 12px;
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .form-container a {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .form-container a:hover {
+            background-color: #555;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background-color: #666;
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .back-link-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .back-link-container a {
+            background-color: #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .back-link-container a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Заказ продовольствия</h1>
+
+<div class="form-container">
+    <form th:method="POST" th:action="@{'/storage/' + ${restaurantId} + '/order'}" th:object="${product}">
+        <label for="itemName">Введите название товара:</label>
+        <input type="text" required th:field="*{itemName}" id="itemName">
+        <div style="color: red" class="error" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}">Ошибка
+        </div>
+
+        <label for="amount">Введите количество необходимого товара:</label>
+        <input type="number" th:field="*{amount}" min="1" required id="amount">
+        <div style="color: red" class="error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Ошибка</div>
+
+        <input type="submit" value="Сделать заказ в ресторан">
+    </form>
+</div>
+
+<form th:action="@{/logout}" th:method="POST">
+    <input class="logout-btn" type="submit" value="Выйти из аккаунта">
+</form>
+
+<div class="back-link-container">
+    <a class="back-link" th:href="@{/storage/{id}(id=${restaurantId})}">Вернуться на страницу ресторана</a>
+    <a class="back-link" th:href="@{/storage}">Вернуться на страницу с ресторанами</a>
+</div>
+
+</body>
+</html>

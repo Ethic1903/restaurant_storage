@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница ресторана</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin: 20px 0;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background-color: #666;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .restaurant-info {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .order-link {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order-link:hover {
+            background-color: #555;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        .orders {
+            margin-top: 20px;
+        }
+
+        .orders b {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .order-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .order-item a {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+        }
+
+        .order-item a:hover {
+            color: #007BFF;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .back-link:hover {
+            background-color: #555;
+        }
+
+        .back-link-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Информация о ресторане</h1>
+
+<div class="container">
+    <div class="restaurant-info" th:text="${restaurant.getAddress()}">
+        Адрес ресторана
+    </div>
+
+    <div style="text-align: center;">
+        <a class="order-link" th:href="@{/storage/{id}/order(id=${restaurant.getId()})}">
+            Сделать заказ в ресторан
+        </a>
+    </div>
+
+    <div class="orders">
+        <div th:if="${products.isEmpty()}" class="no-orders">
+            <p>На текущий момент в этот ресторан нет заказов.</p>
+        </div>
+
+        <div th:if="${!products.isEmpty()}">
+            <b>Список заказов:</b>
+            <table>
+                <tr th:each="product : ${products}">
+                    <td class="order-item">
+                        <a th:href="@{/product/{id}(id=${product.getId()})}"
+                           th:text="${product.getItemName() + ', Количество: ' + product.getAmount() + ' шт.'}">
+                            Заказ
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<form th:action="@{/logout}" th:method="POST">
+    <input class="logout-btn" type="submit" value="Выйти из аккаунта">
+</form>
+
+<div class="back-link-container">
+    <a class="back-link" th:href="@{/storage}">Вернуться на страницу со списком ресторанов</a>
+</div>
+
+</body>
+</html>

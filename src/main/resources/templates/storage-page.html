@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #444;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background-color: #670;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .search-container {
+            background-color: #e9e9e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .search-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .search-container input[type="text"] {
+            width: calc(100% - 16px); /* Убирает лишний отступ */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-container input[type="submit"] {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .search-container input[type="submit"]:hover {
+            background-color: #670;
+        }
+
+        .show-all-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .show-all-container input[type="submit"] {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .show-all-container input[type="submit"]:hover {
+            background-color: #670;
+        }
+
+        .restaurants {
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+
+        .restaurant-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .restaurant-item a {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+        }
+
+        .restaurant-item a:hover {
+            color: #007BFF;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Выйти из аккаунта" class="logout-btn">
+</form>
+
+<h1>Адреса ресторанов</h1>
+
+<div class="container">
+    <div class="search-container">
+        <form th:method="POST" th:action="@{/storage}">
+            <label for="query">Введите адрес ресторана (часть адреса):</label>
+            <input type="text" id="query" name="query" placeholder="Например, улица Пушкина...">
+            <input type="submit" value="Поиск">
+        </form>
+    </div>
+
+    <div class="show-all-container">
+        <form th:method="GET" th:action="@{/storage}">
+            <input type="submit" value="Показать все рестораны">
+        </form>
+    </div>
+
+    <div class="restaurants" th:if="${restaurants}">
+        <div th:if="${restaurants.isEmpty()}" class="no-results">
+            <span>Ресторана с таким адресом не найдено.</span>
+        </div>
+
+        <div th:each="restaurant : ${restaurants}" class="restaurant-item">
+            <a th:href="@{/storage/{id}(id=${restaurant.getId()})}" th:text="${restaurant.getAddress()}">Адрес
+                ресторана</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

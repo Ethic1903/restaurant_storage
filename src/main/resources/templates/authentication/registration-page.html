@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eaeaea;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #444;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            border-color: #999;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #444;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Регистрация</h1>
+    <form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+        <label for="fio">Введите имя пользователя: </label>
+        <input type="text" th:field="*{fio}" id="fio">
+        <div class="error" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}">Error</div>
+
+        <label for="password">Придумайте пароль: </label>
+        <input type="text" th:field="*{password}" id="password">
+        <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+
+    <h2>Уже есть учётная запись? <a href="auth/login">Войти в аккаунт</a></h2>
+</div>
+
+</body>
+</html>

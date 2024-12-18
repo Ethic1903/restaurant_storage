@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация о товаре</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin: 20px 0;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background-color: #666;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .product-info {
+            font-size: 20px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .product-details {
+            margin-top: 20px;
+        }
+
+        .button, .logout-btn, .back-link {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .button:hover, .logout-btn:hover, .back-link:hover {
+            background-color: #555;
+        }
+
+        .form-container {
+            margin-top: 30px;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #c0392b;
+        }
+
+
+        .back-link-container {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Информация о товаре</h1>
+
+<div class="container">
+    <div class="product-info">
+        <p th:text="${'Название товара: ' + product.getItemName() + ', Количество: ' + product.getAmount()}">
+            Название товара: <span>Пример товара</span>, Количество: <span>10</span>
+        </p>
+    </div>
+
+    <div class="product-details">
+        <p>Товар заказан в ресторан по адресу: <span th:text="${client.getAddress()}">Адрес ресторана</span></p>
+    </div>
+
+    <div class="form-container">
+        <form th:method="DELETE" th:action="@{/product/{id}(id=${product.getId()})}">
+            <input type="submit" value="Отменить заказ" class="button">
+        </form>
+    </div>
+
+    <div class="form-container">
+        <p>Вернуться на страницу ресторана:
+            <a th:href="@{/storage/{id}(id=${client.getId()})}" th:text="${client.getAddress()}"
+               class="back-link">text</a>
+        </p>
+        <a th:href="@{/storage}" class="back-link">Вернуться на страницу со списком ресторанов</a>
+    </div>
+
+
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Выйти из аккаунта" class="logout-btn">
+    </form>
+
+</div>
+
+</body>
+</html>
