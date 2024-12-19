@@ -1,7 +1,5 @@
 package ru.georgiy.restaurant_storage.security_config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +16,6 @@ import ru.georgiy.restaurant_storage.services.PersonDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     private final PersonDetailsService personDetailsService;
     private final AuthenticationHandler authenticationHandler;
 
@@ -32,7 +29,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/storage/{id}/edit").hasRole("ADMIN")
+                        .requestMatchers("/storage/{id}/edit", "/storage/new", "/storage/{id}/delete").hasRole("ADMIN")
                         .requestMatchers("/auth/welcome").hasRole("USER")
                         .requestMatchers("/auth/registration", "/auth/login", "/error").permitAll()
                         .anyRequest().hasAnyRole("OWNER", "ADMIN"))
@@ -57,7 +54,6 @@ public class SecurityConfig {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(personDetailsService)
                 .passwordEncoder(getPasswordEncoder());
-        log.info("env {}", System.getenv("URL"));
     }
 
     @Bean

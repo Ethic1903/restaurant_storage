@@ -4,10 +4,9 @@ metadata:
   name: restaurant-service
 spec:
   selector:
-    app: restaurant-service
+    app: restaurant-storage
   ports:
     - protocol: TCP
-      port: 6060
-      targetPort: 6060
+      port: 8080
+      targetPort: 8080
   type: LoadBalancer
-  

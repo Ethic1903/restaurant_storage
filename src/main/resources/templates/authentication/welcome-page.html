@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome page</title>
+    <title>Welcome Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,24 +23,50 @@
             position: fixed;
             top: 10px;
             right: 10px;
-            background-color: #555;
+            background-color: #444;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 15px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .logout-btn:hover {
-            background-color: #670;
+            background-color: #555;
         }
 
-        form {
-            margin-top: 20px;
+        .form-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
         }
 
         input[type="submit"] {
+            display: block;
+            width: 100%;
             padding: 10px 20px;
             background-color: #444;
             color: white;
@@ -53,16 +79,33 @@
         input[type="submit"]:hover {
             background-color: #555;
         }
+
+        .fixed-footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-<h1>Отлично! Вы прошли аутентификацию. Чтобы пользоваться нашим ресурсом вам необходимо связаться с представителем и
-    запросить роль владельца ресторана!</h1>
+<h1>Отлично! Вы прошли аутентификацию.<br>
+    Чтобы пользоваться нашим ресурсом, введите специальный пароль или обратитесь к представителю для его получения.</h1>
 
-<form th:action="@{/logout}" th:method="POST">
-    <input type="submit" value="Выйти из аккаунта">
-</form>
+<div class="form-container">
+    <form th:method="POST" th:action="@{/auth/welcome}">
+        <label for="specKey">Введите специальный пароль:</label>
+        <input type="text" id="specKey" name="specKey" required>
+        <input type="submit" value="Применить">
+    </form>
+</div>
+
+<div class="fixed-footer">
+    <form th:action="@{/logout}" th:method="POST">
+        <button class="logout-btn">Выйти из аккаунта</button>
+    </form>
+</div>
 
 </body>
 </html>

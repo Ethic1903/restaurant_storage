@@ -24,4 +24,16 @@ public class RegistrationService {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         peopleRepository.save(person);
     }
+
+    @Transactional
+    public void setOwnerRole(Person person) {
+        person.setRole("ROLE_OWNER");
+        peopleRepository.save(person);
+    }
+
+    @Transactional
+    public void setAdminRole(Person person) {
+        person.setRole("ROLE_ADMIN");
+        peopleRepository.save(person);
+    }
 }

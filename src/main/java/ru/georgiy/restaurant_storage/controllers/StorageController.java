@@ -9,30 +9,45 @@ import org.springframework.web.bind.annotation.*;
 import ru.georgiy.restaurant_storage.dao.ProductDAO;
 import ru.georgiy.restaurant_storage.models.Product;
 import ru.georgiy.restaurant_storage.models.Restaurant;
-import ru.georgiy.restaurant_storage.services.ProductService;
 import ru.georgiy.restaurant_storage.services.RestaurantService;
 import ru.georgiy.restaurant_storage.util.ProductValidator;
+import ru.georgiy.restaurant_storage.util.RestaurantValidator;
 
 @Controller
 @RequestMapping("/storage")
 public class StorageController {
     private final RestaurantService restaurantService;
-    private final ProductService productService;
     private final ProductDAO productDAO;
     private final ProductValidator productValidator;
+    private final RestaurantValidator restaurantValidator;
 
     @Autowired
-    public StorageController(RestaurantService restaurantService, ProductService productService, ProductDAO productDAO, ProductValidator productValidator) {
+    public StorageController(RestaurantService restaurantService, ProductDAO productDAO, ProductValidator productValidator, RestaurantValidator restaurantValidator) {
         this.restaurantService = restaurantService;
-        this.productService = productService;
         this.productDAO = productDAO;
         this.productValidator = productValidator;
+        this.restaurantValidator = restaurantValidator;
     }
 
     @GetMapping()
     public String storagePage(Model model) {
         model.addAttribute("restaurants", restaurantService.findAll());
         return "storage-page";
+    }
+
+    @GetMapping("/new")
+    public String newRestaurant(@ModelAttribute("restaurant") Restaurant restaurant) {
+        return "new-restaurant";
+    }
+
+    @PostMapping("/new")
+    public String addNewRestaurant(@ModelAttribute("restaurant") @Valid Restaurant restaurant,
+                                   BindingResult bindingResult) {
+        restaurantValidator.validate(restaurant, bindingResult);
+        if (bindingResult.hasErrors())
+            return "new-restaurant";
+        restaurantService.saveRestaurant(restaurant);
+        return "redirect:/storage";
     }
 
     @GetMapping("/{id}")
